@@ -20,7 +20,6 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public GameDTO findById(Long id) {
 		Game result = gameRepository.findById(id).get();
-		// TODO tratamento caso o ID não exista
 		return new GameDTO(result);
 	}
 	
