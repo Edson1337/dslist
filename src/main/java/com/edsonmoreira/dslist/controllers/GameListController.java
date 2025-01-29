@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edsonmoreira.dslist.dto.GameListDTO;
 import com.edsonmoreira.dslist.dto.GameMinDTO;
 import com.edsonmoreira.dslist.dto.ReplacementDTO;
 import com.edsonmoreira.dslist.entities.Game;
+import com.edsonmoreira.dslist.entities.GameList;
 import com.edsonmoreira.dslist.services.GameListService;
 import com.edsonmoreira.dslist.services.GameService;
 
@@ -33,6 +33,12 @@ public class GameListController {
 	@GetMapping
 	public List<GameListDTO> findAll() {
 		return gameListService.findAll();
+	}
+	
+	@PostMapping
+	public ResponseEntity<GameList> createGameList(@RequestBody GameList gameList) {
+		GameList gameListSaved = gameListService.createGameList(gameList);
+		return  ResponseEntity.status(HttpStatus.CREATED).body(gameListSaved);
 	}
 	
 	@GetMapping(value = "/{listId}/games")
