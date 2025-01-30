@@ -52,4 +52,15 @@ public class GameListService {
 			gameListRepository.updateBelongingPosition(listId, list.get(i).getId(), i);
 		}
 	}
+	
+	@Transactional
+	public void deleteGameList(Long listId) {
+		int gameCount = gameListRepository.countGamesInList(listId);
+		
+		if (gameCount > 0) {
+			throw new RuntimeException("It is not possible to delete the list. First remove all the games.");
+		}
+		
+		gameListRepository.deleteById(listId);
+	}
 }

@@ -16,7 +16,10 @@ public interface GameListRepository extends JpaRepository<GameList, Long>{
 	void updatetGameList(Long listId, String name);
 	
 	@Modifying
-	@Query(nativeQuery = true, value = "UPDATE tb_belonging SET position = :newPosition WHERE list_id = :listId AND game_id = :gameId")
+	@Query(nativeQuery = true, value = """
+			UPDATE tb_belonging SET position = :newPosition
+			WHERE list_id = :listId AND game_id = :gameId
+			""")
 	void updateBelongingPosition(Long listId, Long gameId, Integer newPosition);
 	
 	@Modifying
@@ -25,4 +28,10 @@ public interface GameListRepository extends JpaRepository<GameList, Long>{
 	        VALUES (:listId, :gameId, :position)
 	    """)
 	void insertBelonging(Long listId, Long gameId, Integer position);
+	
+	@Query(nativeQuery = true, value = """
+		    SELECT COUNT(*) FROM tb_belonging 
+		    WHERE list_id = :listId
+		""")
+		int countGamesInList(Long listId);
 }
