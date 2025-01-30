@@ -11,6 +11,7 @@ import com.edsonmoreira.dslist.dto.GameDTO;
 import com.edsonmoreira.dslist.dto.GameMinDTO;
 import com.edsonmoreira.dslist.entities.Game;
 import com.edsonmoreira.dslist.projections.GameMinProjection;
+import com.edsonmoreira.dslist.repositories.GameListRepository;
 import com.edsonmoreira.dslist.repositories.GameRepository;
 import com.edsonmoreira.dslist.utils.EntityUtils;
 
@@ -19,6 +20,9 @@ public class GameService {
 	
 	@Autowired
 	private GameRepository gameRepository;
+	
+	@Autowired
+	private GameListRepository gameListRepository;
 	
 	@Transactional(readOnly = true)
 	public GameDTO findById(Long id) {
@@ -36,6 +40,19 @@ public class GameService {
 	public List<GameMinDTO> findByList(Long listId) {
 		List<GameMinProjection> result = gameRepository.searchByList(listId);
 		return result.stream().map(x -> new GameMinDTO(x)).toList();
+	}
+	
+	@Transactional
+	public Game createGameInAList(Long listId , Game game) {
+		List<GameMinProjection> gameList = gameRepository.searchByList(listId);
+		Integer gameListSize = gameList.size() + 1;
+		
+		Game gameSaved = gameRepository.save(game);
+		
+		gameListRepository.insertBelonging(listId, gameSaved.getId(), gameListSize);
+		
+		return gameSaved;
+		
 	}
 	
 	@Transactional

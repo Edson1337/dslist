@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.edsonmoreira.dslist.dto.GameListDTO;
-import com.edsonmoreira.dslist.entities.Game;
 import com.edsonmoreira.dslist.entities.GameList;
 import com.edsonmoreira.dslist.projections.GameMinProjection;
 import com.edsonmoreira.dslist.repositories.GameListRepository;
@@ -47,18 +46,5 @@ public class GameListService {
 		for (int i = min; i <= max; i++) {
 			gameListRepository.updateBelongingPosition(listId, list.get(i).getId(), i);
 		}
-	}
-	
-	@Transactional
-	public Game createGameInAList(Long listId , Game game) {
-		List<GameMinProjection> gameList = gameRepository.searchByList(listId);
-		Integer gameListSize = gameList.size() + 1;
-		
-		Game gameSaved = gameRepository.save(game);
-		
-		gameListRepository.insertBelonging(listId, gameSaved.getId(), gameListSize);
-		
-		return gameSaved;
-		
 	}
 }

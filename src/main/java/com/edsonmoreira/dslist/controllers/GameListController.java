@@ -55,7 +55,7 @@ public class GameListController {
 	public ResponseEntity<Game> createGame(
 			@PathVariable Long listId,
 	        @RequestBody Game game) {
-	    Game createdGame = gameListService.createGameInAList(listId, game);
+	    Game createdGame = gameService.createGameInAList(listId, game);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(createdGame);
 	}
 	
