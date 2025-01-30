@@ -28,6 +28,11 @@ public class GameListService {
 	}
 	
 	@Transactional
+	public void updateList(Long listId, GameList gameList) {
+		gameListRepository.updatetGameList(listId, gameList.getName());
+	}
+	
+	@Transactional
 	public GameList createGameList (GameList gameList) {
 		GameList newGameList = gameListRepository.save(gameList);
 		return newGameList;
