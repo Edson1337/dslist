@@ -64,4 +64,30 @@ public class GameService {
 
 	    gameRepository.save(existingGame);
 	}
+	
+	@Transactional
+	public void deleteGame(Long id) {
+		Long listId = gameRepository.searchListIdByGameId(id);
+	    if (listId == null) {
+	        throw new RuntimeException("Game not found in any list.");
+	    }
+
+	    List<GameMinProjection> gamesInList = gameRepository.searchByList(listId);
+
+	    int removedPosition = -1;
+	    for (int i = 0; i < gamesInList.size(); i++) {
+	        if (gamesInList.get(i).getId().equals(id)) {
+	            removedPosition = i;
+	            break;
+	        }
+	    }
+
+	    if (removedPosition == -1) {
+	        throw new RuntimeException("Game not found in the list.");
+	    }
+
+	    gameRepository.removeGameFromList(id, listId);
+
+	    gameRepository.updateGamePositions(listId, removedPosition);
+	}
 }

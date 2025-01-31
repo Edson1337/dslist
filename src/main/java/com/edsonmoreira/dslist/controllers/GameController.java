@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,6 +39,12 @@ public class GameController {
 			@PathVariable Long id,
 			@RequestBody Game game) {
 		gameService.updateGame(id, game);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> deletGame(@PathVariable Long id) {
+		gameService.deleteGame(id);
 		return ResponseEntity.noContent().build();
 	}
 }
